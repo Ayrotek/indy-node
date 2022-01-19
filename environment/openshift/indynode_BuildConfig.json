@@ -1,0 +1,119 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "image.openshift.io/v1",
+            "kind": "ImageStream",
+            "metadata": {
+                "creationTimestamp": null,
+                "generation": 1,
+                "name": "indynode"
+            },
+            "spec": {
+                "tags": [
+                    {
+                        "annotations": null,
+                        "generation": null,
+                        "importPolicy": {},
+                        "name": "latest"
+                    }
+                ]
+            },
+            "status": {}
+        },
+        {
+            "apiVersion": "build.openshift.io/v1",
+            "kind": "BuildConfig",
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "indynode",
+                    "template": "alice-example"
+                },
+                "name": "indynode"
+            },
+            "spec": {
+                "nodeSelector": null,
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "indynode:latest"
+                    }
+                },
+                "postCommit": {},
+                "resources": {},
+                "runPolicy": "Serial",
+                "source": {
+                    "contextDir": "environment/openshift",
+                    "git": {
+                        "ref": "main",
+                        "uri": "https://github.com/Ayrotek/indy-node.git"
+                    },
+                    "type": "Git"
+                },
+                "strategy": {
+                    "dockerStrategy": {
+                        "dockerfilePath": "node.init.ubuntu.dockerfile",
+                        "env": [
+                            {
+                                "name": "nodename",
+                                "value": "Node1"
+                            },
+                            {
+                                "name": "nport",
+                                "value": "9701"
+                            },
+                            {
+                                "name": "cport",
+                                "value": "9702"
+                            },
+                            {
+                                "name": "ips",
+                                "value": "10.0.0.2,10.0.0.3,10.0.0.4,10.0.0.5"
+                            },
+                            {
+                                "name": "nodenum",
+                                "value": "1"
+                            },
+                            {
+                                "name": "nodecnt",
+                                "value": "4"
+                            },
+                            {
+                                "name": "clicnt",
+                                "value": "10"
+                            },
+                            {
+                                "name": "agentname",
+                                "value": ""
+                            },
+                            {
+                                "name": "agentport",
+                                "value": ""
+                            }
+                        ],
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "indycore:latest"
+                        }
+                    },
+                    "type": "Docker"
+                },
+                "triggers": [
+                    {
+                        "imageChange": {},
+                        "type": "ImageChange"
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            },
+            "status": {
+                "lastVersion": 0
+            }
+        }
+    ]
+}

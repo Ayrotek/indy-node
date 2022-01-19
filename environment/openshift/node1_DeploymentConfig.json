@@ -1,0 +1,198 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "description": "Exposes and load balances the pods for node1."
+                },
+                "name": "node1"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "node-port",
+                        "port": 9701,
+                        "protocol": "TCP",
+                        "targetPort": 9701
+                    },
+                    {
+                        "name": "client-port",
+                        "port": 9702,
+                        "protocol": "TCP",
+                        "targetPort": 9702
+                    },
+                    {
+                        "name": "agent-port",
+                        "port": 5555,
+                        "protocol": "TCP",
+                        "targetPort": 5555
+                    }
+                ],
+                "selector": {
+                    "app": "node1"
+                }
+            }
+        },
+        {
+            "apiVersion": "route.openshift.io/v1",
+            "kind": "Route",
+            "metadata": {
+                "name": "node1"
+            },
+            "spec": {
+                "host": "",
+                "tls": {
+                    "termination": "edge"
+                },
+                "to": {
+                    "kind": "Service",
+                    "name": "node1"
+                },
+                "wildcardPolicy": "None"
+            }
+        },
+        {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "creationTimestamp": null,
+                "generation": 1,
+                "labels": {
+                    "app": "node1"
+                },
+                "name": "node1"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "app": "node1",
+                    "deploymentconfig": "node1"
+                },
+                "strategy": {
+                    "resources": {},
+                    "rollingParams": {
+                        "intervalSeconds": 1,
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%",
+                        "timeoutSeconds": 600,
+                        "updatePeriodSeconds": 1
+                    },
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "node1",
+                            "deploymentconfig": "node1"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "NODE_NAME",
+                                        "value": "Node1"
+                                    },
+                                    {
+                                        "name": "NODE_NUMBER",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NODE_PORT",
+                                        "value": "9701"
+                                    },
+                                    {
+                                        "name": "CLIENT_PORT",
+                                        "value": "9702"
+                                    },
+                                    {
+                                        "name": "NODE_IP_LIST",
+                                        "value": "10.0.0.2,10.0.0.3,10.0.0.4,10.0.0.5"
+                                    },
+                                    {
+                                        "name": "NODE_COUNT",
+                                        "value": "4"
+                                    },
+                                    {
+                                        "name": "CLIENT_COUNT",
+                                        "value": "10"
+                                    },
+                                    {
+                                        "name": "HOME",
+                                        "value": "/home/indy"
+                                    },
+                                    {
+                                        "name": "AGENT_NAME",
+                                        "value": ""
+                                    },
+                                    {
+                                        "name": "AGENT_PORT",
+                                        "value": "5555"
+                                    },
+                                    {
+                                        "name": "NODE_SERVICE_HOST_PATTERN",
+                                        "value": "NODE[0-9]+_SERVICE_HOST="
+                                    }
+                                ],
+                                "image": " ",
+                                "imagePullPolicy": "Always",
+                                "name": "node1",
+                                "ports": [
+                                    {
+                                        "containerPort": 9701,
+                                        "name": "node-port",
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 9702,
+                                        "name": "client-port",
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 5555,
+                                        "name": "agent-port",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                },
+                "test": false,
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "node1"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "indynode:latest",
+                                "namespace": ""
+                            }
+                        },
+                        "type": "ImageChange"
+                    }
+                ]
+            },
+            "status": {}
+        }
+    ]
+}

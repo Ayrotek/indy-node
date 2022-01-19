@@ -1,0 +1,198 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "description": "Exposes and load balances the pods for the Thrift agent."
+                },
+                "name": "thrift-agent"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "node-port",
+                        "port": 9701,
+                        "protocol": "TCP",
+                        "targetPort": 9701
+                    },
+                    {
+                        "name": "client-port",
+                        "port": 9702,
+                        "protocol": "TCP",
+                        "targetPort": 9702
+                    },
+                    {
+                        "name": "agent-port",
+                        "port": 7777,
+                        "protocol": "TCP",
+                        "targetPort": 7777
+                    }
+                ],
+                "selector": {
+                    "app": "thrift-agent"
+                }
+            }
+        },
+        {
+            "apiVersion": "route.openshift.io/v1",
+            "kind": "Route",
+            "metadata": {
+                "name": "thrift-agent"
+            },
+            "spec": {
+                "host": "",
+                "tls": {
+                    "termination": "edge"
+                },
+                "to": {
+                    "kind": "Service",
+                    "name": "thrift-agent"
+                },
+                "wildcardPolicy": "None"
+            }
+        },
+        {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "creationTimestamp": null,
+                "generation": 1,
+                "labels": {
+                    "app": "thrift-agent"
+                },
+                "name": "thrift-agent"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "app": "thrift-agent",
+                    "deploymentconfig": "thrift-agent"
+                },
+                "strategy": {
+                    "resources": {},
+                    "rollingParams": {
+                        "intervalSeconds": 1,
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%",
+                        "timeoutSeconds": 600,
+                        "updatePeriodSeconds": 1
+                    },
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "thrift-agent",
+                            "deploymentconfig": "thrift-agent"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "NODE_NAME",
+                                        "value": ""
+                                    },
+                                    {
+                                        "name": "NODE_NUMBER",
+                                        "value": ""
+                                    },
+                                    {
+                                        "name": "NODE_PORT",
+                                        "value": "9701"
+                                    },
+                                    {
+                                        "name": "CLIENT_PORT",
+                                        "value": "9702"
+                                    },
+                                    {
+                                        "name": "NODE_IP_LIST",
+                                        "value": "10.0.0.2,10.0.0.3,10.0.0.4,10.0.0.5"
+                                    },
+                                    {
+                                        "name": "NODE_COUNT",
+                                        "value": "4"
+                                    },
+                                    {
+                                        "name": "CLIENT_COUNT",
+                                        "value": "10"
+                                    },
+                                    {
+                                        "name": "HOME",
+                                        "value": "/home/indy"
+                                    },
+                                    {
+                                        "name": "AGENT_NAME",
+                                        "value": "Thrift"
+                                    },
+                                    {
+                                        "name": "AGENT_PORT",
+                                        "value": "7777"
+                                    },
+                                    {
+                                        "name": "NODE_SERVICE_HOST_PATTERN",
+                                        "value": "NODE[0-9]+_SERVICE_HOST="
+                                    }
+                                ],
+                                "image": " ",
+                                "imagePullPolicy": "Always",
+                                "name": "thrift-agent",
+                                "ports": [
+                                    {
+                                        "containerPort": 9701,
+                                        "name": "node-port",
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 9702,
+                                        "name": "client-port",
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 7777,
+                                        "name": "agent-port",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                },
+                "test": false,
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "thrift-agent"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "indyagent:latest",
+                                "namespace": ""
+                            }
+                        },
+                        "type": "ImageChange"
+                    }
+                ]
+            },
+            "status": {}
+        }
+    ]
+}

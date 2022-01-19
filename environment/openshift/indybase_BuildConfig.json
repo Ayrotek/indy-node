@@ -1,0 +1,119 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "image.openshift.io/v1",
+            "kind": "ImageStream",
+            "metadata": {
+                "creationTimestamp": null,
+                "generation": 1,
+                "name": "indybase"
+            },
+            "spec": {
+                "tags": [
+                    {
+                        "annotations": null,
+                        "generation": null,
+                        "importPolicy": {},
+                        "name": "latest"
+                    }
+                ]
+            },
+            "status": {}
+        },
+        {
+            "apiVersion": "build.openshift.io/v1",
+            "kind": "BuildConfig",
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "indybase",
+                    "template": "alice-example"
+                },
+                "name": "indybase"
+            },
+            "spec": {
+                "nodeSelector": null,
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "indybase:latest"
+                    }
+                },
+                "postCommit": {},
+                "resources": {},
+                "runPolicy": "Serial",
+                "source": {
+                    "contextDir": "environment/openshift",
+                    "git": {
+                        "ref": "main",
+                        "uri": "https://github.com/Ayrotek/indy-node.git"
+                    },
+                    "type": "Git"
+                },
+                "strategy": {
+                    "dockerStrategy": {
+                        "dockerfilePath": "base.systemd.ubuntu.dockerfile",
+                        "env": [
+                            {
+                                "name": "nodename",
+                                "value": ""
+                            },
+                            {
+                                "name": "nport",
+                                "value": ""
+                            },
+                            {
+                                "name": "cport",
+                                "value": ""
+                            },
+                            {
+                                "name": "ips",
+                                "value": ""
+                            },
+                            {
+                                "name": "nodenum",
+                                "value": ""
+                            },
+                            {
+                                "name": "nodecnt",
+                                "value": ""
+                            },
+                            {
+                                "name": "clicnt",
+                                "value": ""
+                            },
+                            {
+                                "name": "agentname",
+                                "value": ""
+                            },
+                            {
+                                "name": "agentport",
+                                "value": ""
+                            }
+                        ],
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "solita/ubuntu-systemd:16.04"
+                        }
+                    },
+                    "type": "Docker"
+                },
+                "triggers": [
+                    {
+                        "imageChange": {},
+                        "type": "ImageChange"
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            },
+            "status": {
+                "lastVersion": 0
+            }
+        }
+    ]
+}
