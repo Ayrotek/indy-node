@@ -30,19 +30,19 @@ if [ -z "$PROJECT_NAME" ]; then
 fi
 
 if [ -z "$GIT_REF" ]; then
-	GIT_REF="stable"
+	GIT_REF="main"
 	echo "Defaulting 'GIT_REF' to ${GIT_REF} ..."
 	echo
 fi
 
 if [ -z "$GIT_URI" ]; then
-	GIT_URI="https://github.com/hyperledger/indy-node.git"
+	GIT_URI="https://github.com/Ayrotek/indy-node.git
 	echo "Defaulting 'GIT_URI' to ${GIT_URI} ..."
 	echo
 fi
 
 if [ -z "$GIT_CONTEXT_DIR" ]; then
-	GIT_CONTEXT_DIR="openshift"
+	GIT_CONTEXT_DIR="environment/openshift"
 	echo "Defaulting 'GIT_CONTEXT_DIR' to ${GIT_CONTEXT_DIR} ..."
 	echo
 fi
