@@ -16,19 +16,19 @@ echo
 
 if [[ ${NODE_NAME} == 'Node1' ]]; then
 
-    NODE_IP = "${NODE_IP_LIST[1]}"
+    "${NODE_IP}" = "${NODE_IP_LIST[1]}"
 
 elif [[ ${NODE_NAME} == 'Node2' ]]; then
 
-    NODE_IP = "${NODE_IP_LIST[2]}"
+    "${NODE_IP}" = "${NODE_IP_LIST[2]}"
 
 elif [[ ${NODE_NAME} == 'Node3' ]]; then
 
-    NODE_IP = "${NODE_IP_LIST[3]}"
+    "${NODE_IP}" = "${NODE_IP_LIST[3]}"
 
 elif [[ ${NODE_NAME} == 'Node4' ]]; then
 
-    NODE_IP = "${NODE_IP_LIST[4]}"
+    "${NODE_IP}" = "${NODE_IP_LIST[4]}"
 
 fi
 
