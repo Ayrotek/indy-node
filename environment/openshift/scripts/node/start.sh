@@ -21,13 +21,13 @@ echo "My array: ${myarray[@]}"
 
 
 if [[ ${NODE_NAME} == "Node1" ]]; then
-    a="${myarray[1]}"
+    a="${myarray[0]}"
 elif [[ ${NODE_NAME} == "Node2" ]]; then
-    a="${myarray[2]}"
+    a="${myarray[1]}"
 elif [[ ${NODE_NAME} == "Node3" ]]; then
-    a="${myarray[3]}"
+    a="${myarray[2]}"
 elif [[ ${NODE_NAME} == "Node4" ]]; then
-    a="${myarray[4]}"
+    a="${myarray[3]}"
 fi
 
 echo $a
