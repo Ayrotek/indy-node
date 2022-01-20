@@ -14,18 +14,20 @@ echo
 
 
 echo $ips
-echo "TEST"
-echo ${NODE_IP_LIST}
-echo "TEST"
+echo "TEST ips"
+echo ${NODE_IP_LIST[1]}
+echo "TEST node ip 1"
+
+a=""
 
 if [[ ${NODE_NAME} == "Node1" ]]; then
-    NODE_IP = "${NODE_IP_LIST[1]}"
+    a = "${NODE_IP_LIST[1]}"
 elif [[ ${NODE_NAME} == "Node2" ]]; then
-    NODE_IP = "${NODE_IP_LIST[2]}"
+    a = "${NODE_IP_LIST[2]}"
 elif [[ ${NODE_NAME} == "Node3" ]]; then
-    NODE_IP = "${NODE_IP_LIST[3]}"
+    a = "${NODE_IP_LIST[3]}"
 elif [[ ${NODE_NAME} == "Node4" ]]; then
-    NODE_IP = "${NODE_IP_LIST[4]}"
+    a = "${NODE_IP_LIST[4]}"
 fi
 
 echo $NODE_IP
