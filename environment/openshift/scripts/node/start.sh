@@ -14,8 +14,9 @@ echo
 
 
 echo $ips
+echo ${NEW_NODE_IP_LIST}
 echo "TEST ips"
-myarray=(`echo $ips | tr ',' ' '`)
+myarray=(`echo ${NEW_NODE_IP_LIST} | tr ',' ' '`)
 echo "My array: ${myarray[@]}"
 
 
