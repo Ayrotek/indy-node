@@ -32,4 +32,4 @@ RUN chown -R indy:root /home/indy && \
 
 USER 10001
 WORKDIR /home/indy
-CMD ["source", "/home/indy/start.sh"]
+CMD ["/home/indy/start.sh"]

@@ -26,6 +26,8 @@ if [ ! -z "${NODE_SERVICE_HOST_PATTERN}" ]; then
     echo "Changing;"
     echo -e "\tNODE_IP_LIST: ${NODE_IP_LIST}"
     export NODE_IP_LIST=${NEW_NODE_IP_LIST}
+    ips=${NEW_NODE_IP_LIST}
+    echo "ips: ${ips}"
     echo -e "\tNODE_IP_LIST: ${NODE_IP_LIST}"
     echo -------------------------------------------------------------------------------
     echo "Changing;"
