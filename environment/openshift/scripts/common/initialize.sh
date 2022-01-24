@@ -3,7 +3,7 @@
 SCRIPT_DIR=$(dirname $0)
 
 if [ ! -z "${NODE_SERVICE_HOST_PATTERN}" ]; then 
-  export NEW_NODE_IP_LIST=$(${SCRIPT_DIR}/getNodeAddressList.sh ${NODE_SERVICE_HOST_PATTERN})
+  NEW_NODE_IP_LIST=$(${SCRIPT_DIR}/getNodeAddressList.sh ${NODE_SERVICE_HOST_PATTERN})
   rc=${?}; 
   if [[ ${rc} != 0 ]]; then
     echo "Call to getNodeAddressList.sh failed:"
