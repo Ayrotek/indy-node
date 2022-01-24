@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPT_DIR=$(dirname $0)
 
-$SCRIPT_DIR/initialize.sh
+source $SCRIPT_DIR/initialize.sh
 
 echo "Starting indy node ..."
 echo
